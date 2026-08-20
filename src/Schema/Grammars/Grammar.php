@@ -2,10 +2,24 @@
 
 namespace Vinelab\NeoEloquent\Schema\Grammars;
 
+use Illuminate\Database\Connection;
 use Illuminate\Database\Schema\Grammars\Grammar as IlluminateSchemaGrammar;
 
 class Grammar extends IlluminateSchemaGrammar
 {
+    /**
+     * Create a new grammar instance.
+     *
+     * NeoEloquent grammars do not require a connection at construction time,
+     * so we bypass the parent constructor that mandates one (Laravel 12+).
+     *
+     * @param \Illuminate\Database\Connection|null $connection
+     */
+    public function __construct(?Connection $connection = null)
+    {
+        $this->connection = $connection;
+    }
+
     /**
      * Make sure the label is wrapped with backticks.
      *

@@ -12,7 +12,6 @@ use Laudis\Neo4j\Contracts\ClientInterface;
 use Laudis\Neo4j\Contracts\TransactionInterface;
 use Laudis\Neo4j\Databags\ResultSummary;
 use Laudis\Neo4j\Databags\SummarizedResult;
-use Laudis\Neo4j\Formatter\OGMFormatter;
 use Laudis\Neo4j\Formatter\SummarizedResultFormatter;
 use Laudis\Neo4j\Types\CypherList;
 use LogicException;
@@ -378,7 +377,7 @@ class Connection implements ConnectionInterface
 
     private function initBuilder(): ClientBuilder
     {
-        $formatter = new SummarizedResultFormatter(OGMFormatter::create());
+        $formatter = SummarizedResultFormatter::create();
         return ClientBuilder::create()->withFormatter($formatter);
     }
 

@@ -15,9 +15,11 @@ class Stub extends Model
 
 class TestCase extends PHPUnit
 {
-    public function __construct()
+    protected array $dbConfig = [];
+
+    public function __construct(string $name)
     {
-        parent::__construct();
+        parent::__construct($name);
 
         // load custom configuration file
         $this->dbConfig = require 'config/database.php';

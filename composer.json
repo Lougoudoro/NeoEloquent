@@ -35,7 +35,8 @@
         "phpunit/phpunit": "^11.0",
         "symfony/var-dumper": "*",
         "laravel/pint": "^1.0",
-        "composer/composer": "^2.8"
+        "composer/composer": "^2.8",
+        "fakerphp/faker": "^1.23"
     },
     "autoload": {
         "psr-4": {
