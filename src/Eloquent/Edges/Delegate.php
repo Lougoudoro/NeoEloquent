@@ -137,7 +137,7 @@ abstract class Delegate
             unset($properties['id']);
         }
 
-        return new Relationship($id, $this->asNode($startModel)->getId(), $this->asNode($endModel)->getId(), $type, new CypherMap($properties));
+        return new Relationship($id, $this->asNode($startModel)->getId(), $this->asNode($endModel)->getId(), $type, new CypherMap($properties), '');
     }
 
     /**
@@ -256,7 +256,7 @@ abstract class Delegate
             unset($properties['id']);
         }
 
-        return new Node($id, new CypherList([$label]), new CypherMap($properties));
+        return new Node($id, new CypherList([$label]), new CypherMap($properties), (string) ($id ?? ''));
     }
 
     /**

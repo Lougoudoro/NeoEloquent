@@ -34,6 +34,20 @@ abstract class HasOneOrMany extends Relation implements RelationInterface
     protected $edgeDirection = 'out';
 
     /**
+     * The local key for the relationship.
+     *
+     * @var string
+     */
+    protected $localKey;
+
+    /**
+     * The relationship type (edge label).
+     *
+     * @var string
+     */
+    protected $type;
+
+    /**
      * Create a new has many relationship instance.
      *
      * @param \Vinelab\NeoEloquent\Eloquent\Builder $query
