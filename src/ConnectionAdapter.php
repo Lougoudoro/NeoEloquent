@@ -383,7 +383,7 @@ class ConnectionAdapter extends BaseConnection implements ConnectionInterface
 	 *
 	 * @return void
 	 */
-	protected function reconnectIfMissingConnection()
+	public function reconnectIfMissingConnection()
 	{
 		$this->neoeloquent->reconnectIfMissingConnection();
 	}
