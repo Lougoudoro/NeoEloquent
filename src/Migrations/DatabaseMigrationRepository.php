@@ -66,6 +66,14 @@ class DatabaseMigrationRepository implements MigrationRepositoryInterface
     /**
      * {@inheritDoc}
      */
+    public function getMigrationsByBatch($batch)
+    {
+        return $this->label()->where('batch', $batch)->get()->all();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getLast()
     {
         return $this->model->whereBatch($this->getLastBatchNumber())->get()->toArray();
