@@ -875,7 +875,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         // foreign key name by using the name of the calling class, which
         // will be uppercased and used as a relationship label
         if (is_null($foreignKey)) {
-            $foreignKey = strtoupper($caller['class']);
+            $foreignKey = strtoupper(basename(str_replace('\\', '/', $caller['class'] ?? static::class)));
         }
 
         $instance = new $related();
@@ -884,6 +884,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         // for the related models and returns the relationship instance which will
         // actually be responsible for retrieving and hydrating every relations.
         $query = $instance->newQuery();
+
 
         $otherKey = $otherKey ?: $instance->getKeyName();
 
@@ -918,7 +919,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
             if (!isset($caller)) {
                 list(, $caller) = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
             }
-            $foreignKey = strtoupper($caller['class'] ?? basename(str_replace('\\', '/', static::class)));
+            $foreignKey = strtoupper(basename(str_replace('\\', '/', $caller['class'] ?? static::class)));
         }
 
         $instance = new $related();
