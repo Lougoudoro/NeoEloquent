@@ -196,9 +196,9 @@ class ConnectionAdapter extends BaseConnection implements ConnectionInterface
 	 * @param  array   $bindings
 	 * @return bool
 	 */
-	public function statement($query, $bindings = array())
+	public function statement($query, $bindings = array(), $rawResults = false)
 	{
-		return $this->neoeloquent->statement($query, $bindings);
+		return $this->neoeloquent->statement($query, $bindings, $rawResults);
 	}
 
 	/**
