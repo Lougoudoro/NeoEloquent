@@ -866,7 +866,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         // the calling method's name and use that as the relationship name as most
         // of the time this will be what we desire to use for the relationships.
         if (is_null($relation)) {
-            list(, $caller) = debug_backtrace(false);
+            list(, $caller) = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1);
 
             $relation = $caller['function'];
         }
@@ -906,7 +906,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         // the calling method's name and use that as the relationship name as most
         // of the time this will be what we desire to use for the relationships.
         if (is_null($relation)) {
-            list(, $caller) = debug_backtrace(false);
+            list(, $caller) = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1);
 
             $relation = $caller['function'];
         }
@@ -946,7 +946,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         // the calling method's name and use that as the relationship name as most
         // of the time this will be what we desire to use for the relationships.
         if (is_null($relation)) {
-            list(, $caller) = debug_backtrace(false);
+            list(, $caller) = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1);
 
             $relation = $caller['function'];
         }
@@ -992,7 +992,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         // the calling method's name and use that as the relationship name as most
         // of the time this will be what we desire to use for the relationships.
         if (is_null($relation)) {
-            list(, $caller) = debug_backtrace(false);
+            list(, $caller) = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1);
 
             $relation = $caller['function'];
         }
@@ -1036,7 +1036,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         // the calling method's name and use that as the relationship name as most
         // of the time this will be what we desire to use for the relationships.
         if (is_null($relation)) {
-            list(, $caller) = debug_backtrace(false);
+            list(, $caller) = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1);
 
             $relation = $caller['function'];
         }
@@ -1086,7 +1086,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         // the calling method's name and use that as the relationship name as most
         // of the time this will be what we desire to use for the relationships.
         if (is_null($relation)) {
-            list(, $caller) = debug_backtrace(false);
+            list(, $caller) = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1);
 
             $relation = $caller['function'];
         }
@@ -1152,7 +1152,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         // the calling method's name and use that as the relationship name as most
         // of the time this will be what we desire to use for the relationships.
         if (is_null($relation)) {
-            list(, $caller) = debug_backtrace(false);
+            list(, $caller) = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1);
 
             $relation = $caller['function'];
         }
@@ -1195,7 +1195,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         // and relationship type we're looking for.
         if ($name && $type) {
             // Determine the relation function name out of the back trace
-            list(, $caller) = debug_backtrace(false);
+            list(, $caller) = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1);
             $relation = $caller['function'];
 
             return $this->morphedByOne($name, $type, $id, $relation);
@@ -1205,7 +1205,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         // since that is most likely the name of the polymorphic interface. We can
         // use that to get both the class and foreign key that will be utilized.
         if (is_null($name)) {
-            list(, $caller) = debug_backtrace(false);
+            list(, $caller) = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1);
 
             $name = Str::snake($caller['function']);
         }
@@ -1242,7 +1242,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
      */
     public function getActualClassNameForMorph($class)
     {
-        return array_get(Relation::morphMap(), $class, $class);
+        return Arr::get(Relation::morphMap(), $class, $class);
     }
 
     /**
@@ -3125,7 +3125,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function replicate(array $except = null)
+    public function replicate(?array $except = null)
     {
         $except = $except ?: [
             $this->getKeyName(),
@@ -3133,7 +3133,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
             $this->getUpdatedAtColumn(),
         ];
 
-        $attributes = array_except($this->attributes, $except);
+        $attributes = Arr::except($this->attributes, $except);
 
         with($instance = new static())->setRawAttributes($attributes);
 

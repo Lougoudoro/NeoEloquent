@@ -2,14 +2,12 @@
 
 namespace Vinelab\NeoEloquent\Console\Migrations;
 
-use Illuminate\Console\ConfirmableTrait;
+use Illuminate\Console\Command;
 use Illuminate\Database\Migrations\Migrator;
 use Symfony\Component\Console\Input\InputOption;
 
-class MigrateCommand extends BaseCommand
+class MigrateCommand extends Command
 {
-    use ConfirmableTrait;
-
     /**
      * {@inheritDoc}
      */
@@ -47,11 +45,9 @@ class MigrateCommand extends BaseCommand
     /**
      * {@inheritDoc}
      */
-    public function fire()
+    public function handle(): int
     {
-        if (!$this->confirmToProceed()) {
-            return;
-        }
+        $this->migrator->setOutput($this->output);
 
         // The pretend option can be used for "simulating" the migration and grabbing
         // the SQL queries that would fire if the migration were to be run against
@@ -63,19 +59,14 @@ class MigrateCommand extends BaseCommand
         $this->migrator->setConnection($this->input->getOption('database'));
         $this->migrator->run($path, ['pretend' => $pretend]);
 
-        // Once the migrator has run we will grab the note output and send it out to
-        // the console screen, since the migrator itself functions without having
-        // any instances of the OutputInterface contract passed into the class.
-        foreach ($this->migrator->getNotes() as $note) {
-            $this->output->writeln($note);
-        }
-
         // Finally, if the "seed" option has been given, we will re-run the database
         // seed task to re-populate the database, which is convenient when adding
         // a migration and a seed at the same time, as it is only this command.
         if ($this->input->getOption('seed')) {
             $this->call('db:seed', ['--force' => true]);
         }
+
+        return Command::SUCCESS;
     }
 
     /**

@@ -3,14 +3,11 @@
 namespace Vinelab\NeoEloquent\Console\Migrations;
 
 use Illuminate\Console\Command;
-use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Database\Migrations\Migrator;
 use Symfony\Component\Console\Input\InputOption;
 
 class MigrateRollbackCommand extends Command
 {
-    use ConfirmableTrait;
-
     /**
      * {@inheritDoc}
      */
@@ -43,11 +40,9 @@ class MigrateRollbackCommand extends Command
     /**
      * {@inheritDoc}
      */
-    public function fire()
+    public function handle(): int
     {
-        if (!$this->confirmToProceed()) {
-            return;
-        }
+        $this->migrator->setOutput($this->output);
 
         $this->migrator->setConnection($this->input->getOption('database'));
 
@@ -55,12 +50,7 @@ class MigrateRollbackCommand extends Command
 
         $this->migrator->rollback(['pretend' => $pretend]);
 
-        // Once the migrator has run we will grab the note output and send it out to
-        // the console screen, since the migrator itself functions without having
-        // any instances of the OutputInterface contract passed into the class.
-        foreach ($this->migrator->getNotes() as $note) {
-            $this->output->writeln($note);
-        }
+        return Command::SUCCESS;
     }
 
     /**

@@ -18,6 +18,20 @@ use Illuminate\Events\Dispatcher;
 
 class ConnectionAdapter extends BaseConnection implements ConnectionInterface
 {
+    /**
+     * The NeoEloquent connection instance.
+     *
+     * @var \Vinelab\NeoEloquent\Connection
+     */
+    protected $neoeloquent;
+
+    /**
+     * The default fetch mode for the connection.
+     *
+     * @var int
+     */
+    protected $fetchMode;
+
     public function __construct(array $config = [])
     {
         $this->neoeloquent = app('neoeloquent.connection');
@@ -182,9 +196,9 @@ class ConnectionAdapter extends BaseConnection implements ConnectionInterface
 	 * @param  array   $bindings
 	 * @return bool
 	 */
-	public function statement($query, $bindings = array(), $rawResults = false)
+	public function statement($query, $bindings = array())
 	{
-		return $this->neoeloquent->statement($query, $bindings, $rawResults);
+		return $this->neoeloquent->statement($query, $bindings);
 	}
 
 	/**
@@ -557,27 +571,6 @@ class ConnectionAdapter extends BaseConnection implements ConnectionInterface
 	}
 
 	/**
-	 * Get the default fetch mode for the connection.
-	 *
-	 * @return int
-	 */
-	public function getFetchMode()
-	{
-		return $this->fetchMode;
-	}
-
-	/**
-	 * Set the default fetch mode for the connection.
-	 *
-	 * @param  int  $fetchMode
-	 * @return int
-	 */
-	public function setFetchMode($fetchMode, $fetchArgument = null, array $fetchConstructorArgument = [])
-	{
-        $this->neoeloquent->setFetchMode($fetchMode);
-	}
-
-	/**
 	 * Get the connection query log.
 	 *
 	 * @return array
@@ -627,8 +620,8 @@ class ConnectionAdapter extends BaseConnection implements ConnectionInterface
 		return $this->neoeloquent->logging();
 	}
 
-    public function __call($method, $parameters)
+    public function __call($method, $parameters): mixed
     {
-        call_user_func_array([$this->neoeloquent, $method], $parameters);
+        return call_user_func_array([$this->neoeloquent, $method], $parameters);
     }
 }

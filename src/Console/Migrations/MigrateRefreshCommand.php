@@ -3,13 +3,10 @@
 namespace Vinelab\NeoEloquent\Console\Migrations;
 
 use Illuminate\Console\Command;
-use Illuminate\Console\ConfirmableTrait;
 use Symfony\Component\Console\Input\InputOption;
 
 class MigrateRefreshCommand extends Command
 {
-    use ConfirmableTrait;
-
     /**
      * {@inheritDoc}
      */
@@ -23,12 +20,8 @@ class MigrateRefreshCommand extends Command
     /**
      * {@inheritDoc}
      */
-    public function fire()
+    public function handle(): int
     {
-        if (!$this->confirmToProceed()) {
-            return;
-        }
-
         $database = $this->input->getOption('database');
 
         $force = $this->input->getOption('force');
@@ -47,6 +40,8 @@ class MigrateRefreshCommand extends Command
         if ($this->needsSeeding()) {
             $this->runSeeder($database);
         }
+
+        return Command::SUCCESS;
     }
 
     /**
